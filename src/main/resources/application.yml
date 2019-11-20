@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: test
+  rabbitmq:
+    host: 172.25.11.12
+    port: 5672
+    username: ascs
+    password: ascs.tech
+    virtual-host: upm
+    listener:
+      direct:
+        acknowledge-mode: auto
+server:
+  port: 8087
+#  freemarker静态资源配置
+spring.freemarker.template-loader-path: classpath:/templates
+spring.freemarker.cache: false
+spring.freemarker.charset: UTF-8
+spring.freemarker.check-template-location: true
+spring.freemarker.content-type: text/html
+spring.freemarker.expose-request-attributes: true
+spring.freemarker.expose-session-attributes: true
+spring.freemarker.expose-spring-macro-helpers: true
+spring.freemarker.request-context-attribute: request
+spring.freemarker.settings.template_update_delay: 0
+spring.freemarker.suffix: .ftl
