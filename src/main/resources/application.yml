@@ -2,14 +2,37 @@ spring:
   application:
     name: test
   rabbitmq:
-    host: 172.25.11.12
+    host: localhost
     port: 5672
-    username: ascs
-    password: ascs.tech
-    virtual-host: upm
-    listener:
-      direct:
-        acknowledge-mode: auto
+    username: user
+    password: password
+    virtual-host: my_host
+
+# 开启发送确认
+#spring.rabbitmq.publisher-confirms: true
+# 开启发送失败退回
+#spring.rabbitmq.publisher-returns: true
+#开启confirm机制的回调
+spring.rabbitmq.publisher-confirms: true
+#开启return机制的回调
+spring.rabbitmq.publisher-returns: true
+#开启发送消息的mandatory委托 可以接收return回调
+spring.rabbitmq.template.mandatory: true
+
+
+#设置消费端手动 ack
+spring.rabbitmq.listener.direct.acknowledge-mode: manual
+spring.rabbitmq.listener.simple.acknowledge-mode: manual
+
+#消费者最小数量(即如果不够那一个消费端将充当多个消费者）
+spring.rabbitmq.listener.simple.concurrency: 1
+#消费之最大数量
+spring.rabbitmq.listener.simple.max-concurrency: 10
+#在单个请求中处理的消息个数，（basicQos限流在springboot中不再生效）
+#单个消费者限流的数=(concurrency*prefetch)/消费者端总数 因为有最小消费者数量
+spring.rabbitmq.listener.simple.prefetch: 1
+
+
 server:
   port: 8087
 #  freemarker静态资源配置
