@@ -13,7 +13,6 @@ public class ProducerImpl implements Producer {
 
 	public void sendMail(String queue, Mail mail) throws InterruptedException {
 		rabbitTemplate.convertAndSend(queue, mail);
-		Thread.sleep(1);
 	}
 
 }

@@ -4,6 +4,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class TopicExchangeConfig {
 	@Bean
  	public TopicExchange topicExchange(){
+		MessageConversionException a;
 		TopicExchange topicExchange=new TopicExchange("mytopic");
  		return topicExchange;
  	}
