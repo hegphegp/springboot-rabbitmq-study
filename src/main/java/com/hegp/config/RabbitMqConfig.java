@@ -42,8 +42,6 @@ public class RabbitMqConfig {
         return new ConditionalRejectingErrorHandler(new DefaultExceptionStrategy());
     }
 
-    @Autowired
-    private SimpleMessageListenerContainer messageContainer;
 //    @Bean
 //    public SimpleMessageListenerContainer messageContainer(final ConnectionFactory connectionFactory) {
 //        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
@@ -72,6 +70,10 @@ public class RabbitMqConfig {
             @Override
             public Object handleError(Message amqpMessage, org.springframework.messaging.Message<?> message,
                                       ListenerExecutionFailedException exception) throws Exception {
+                // 序列化不了的信息, 直接丢弃掉, 丢弃的话, 要用 channel 这个对象, 但是怎么获取
+                if (exception.getCause() instanceof MessageConversionException) {
+
+                }
                 System.out.println("-------------------------------------"+message);
                 throw exception;
 //                return null;
