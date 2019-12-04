@@ -2,16 +2,33 @@ spring:
   application:
     name: test
   rabbitmq:
-    host: localhost
+    host: 192.168.4.163
     port: 5672
-    username: user
-    password: password
+    username: guest
+    password: guest
     virtual-host: my_host
     listener:
       simple:
-        default-requeue-rejected: false
+        acknowledge-mode: manual # 手动应答
+        default-requeue-rejected: true # 重试次数超过设置之后是否丢弃（false不丢弃时需要写相应代码将该消息加入死信队列）
+        auto-startup: true
+        concurrency: 5 # 消费者数量
+        max-concurrency: 20 # 最大消费者数量
+        prefetch: 1 # 每次只处理一个信息
+        retry:
+          multiplier: 1
+          enabled: true
+          max-attempts: 5
+          max-interval: 10000ms    # 重试间隔时间（单位毫秒）
+          initial-interval: 5000ms # 第1次和第2次的个红石时间间隔
       direct:
+        acknowledge-mode: manual
         default-requeue-rejected: false
+
+#spring.rabbitmq.listener.simple.retry.max-attempts: 5 # 最大重试次数
+#spring.rabbitmq.listener.simple.retry.enabled: true # 是否开启消费者重试（为false时关闭消费者重试，这时消费端代码异常会一直重复收到消息）
+#spring.rabbitmq.listener.simple.retry.initial-interval: 5000ms # 重试间隔时间（单位毫秒）
+#spring.rabbitmq.listener.simple.default-requeue-rejected: false #重试次数超过上面的设置之后是否丢弃（false不丢弃时需要写相应代码将该消息加入死信队列）
 
 # 开启发送确认(开启此模式，生产者成功发送到交换机后执行相应的回调函数)
 #spring.rabbitmq.publisher-confirms: true
@@ -26,17 +43,13 @@ spring.rabbitmq.publisher-returns: true
 # 开启发送消息的mandatory委托 可以接收return回调
 spring.rabbitmq.template.mandatory: true
 
-# 设置消费端手动 ack
-spring.rabbitmq.listener.direct.acknowledge-mode: manual
-spring.rabbitmq.listener.simple.acknowledge-mode: manual
+## 设置消费端手动 ack
+#spring.rabbitmq.listener.direct.acknowledge-mode: manual
+#spring.rabbitmq.listener.simple.acknowledge-mode: manual
 
-# 消费者最小数量(即如果不够那一个消费端将充当多个消费者）
-spring.rabbitmq.listener.simple.concurrency: 1
-# 消费之最大数量
-spring.rabbitmq.listener.simple.max-concurrency: 10
-# 在单个请求中处理的消息个数，（basicQos限流在springboot中不再生效）
-# 单个消费者限流的数=(concurrency*prefetch)/消费者端总数 因为有最小消费者数量
-spring.rabbitmq.listener.simple.prefetch: 1
+## 在单个请求中处理的消息个数，（basicQos限流在springboot中不再生效）
+## 单个消费者限流的数=(concurrency*prefetch)/消费者端总数 因为有最小消费者数量
+#spring.rabbitmq.listener.simple.prefetch: 1
 
 
 server:

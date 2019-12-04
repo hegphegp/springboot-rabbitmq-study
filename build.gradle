@@ -27,6 +27,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.alibaba:fastjson:1.2.62'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.springframework.boot:spring-boot-starter-freemarker'
     implementation 'org.springframework.boot:spring-boot-starter-web'
