@@ -7,11 +7,11 @@ spring:
     username: user
     password: password
     virtual-host: my_host
-    listener:
-      simple:
-        default-requeue-rejected: false
-      direct:
-        default-requeue-rejected: false
+
+# 官方给出来的重试次数3次的例子逻辑是, 先手动确认该消息, 然后再用channel或者rabbitTemplate重发该消息, 同时在头部添加失败次数
+# https://cloud.spring.io/spring-cloud-static/spring-cloud-stream-binder-rabbit/3.0.0.RELEASE/reference/html/spring-cloud-stream-binder-rabbit.html#_non_partitioned_destinations
+# spring.rabbitmq.listener.simple.retry.max-attempts=3 配置的是当前的消费者重试的次数, 不是整个rabbitmq消息失败的重试次数, 有多个服务时, 每个服务都会重试那条消息3次
+#spring.rabbitmq.listener.simple.retry.max-attempts: 3
 
 # 开启发送确认(开启此模式，生产者成功发送到交换机后执行相应的回调函数)
 #spring.rabbitmq.publisher-confirms: true

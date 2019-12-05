@@ -19,6 +19,15 @@ public class RabbitMqConfig {
         return rabbitTemplate;
     }
 
+    /**
+     * 重试3次, 超过3次就丢弃消息
+     * @param channel
+     * @param message
+     */
+    public static void retryOrGiveUpMsg(Channel channel, Message message) {
+
+    }
+
     // 手动确认信息
     public static void basicAck(Channel channel, Message message, boolean multiple) {
         //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了 否则消息服务器以为这条消息没处理掉 后续还会在发
